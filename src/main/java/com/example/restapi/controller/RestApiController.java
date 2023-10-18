@@ -1,5 +1,6 @@
 package com.example.restapi.controller;
 
+import com.example.restapi.model.BookQueryParam;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,13 +38,28 @@ public class RestApiController {
         return "hello";
     }
 
+    // http://localhost:8080/api/book2?category=hello&issuedYear=2023&issuedMonth=09&issuedDay=20
     @GetMapping(path="/book2")
     public String queryParamDto(
-            @RequestParam String category,
-            @RequestParam String issuedYear,
-            @RequestParam(name="issued-month") String issuedMonth,
-            @RequestParam String issued_day
+        BookQueryParam bookQueryParam
     ) {
+        System.out.println(bookQueryParam);
         return "hello";
     }
+
+    // TODO Parameter 2가지를 받습니다. int 형태로 받아서 두 수의 덧셈과 곱셈을 수행
+    // TODO String 타입 boolean 타입도 받아볼 것
+    @GetMapping(path="/add/{integer1}/{integer2}")
+    public int addTwoInt(
+            @PathVariable int integer1,
+            @PathVariable int integer2) {
+        return integer1 + integer2;
+    }
+
+    @GetMapping(path="/bool/{boolInput}")
+    public boolean booleanQuery(
+            @PathVariable boolean boolInput) {
+        return boolInput;
+    }
+
 }
