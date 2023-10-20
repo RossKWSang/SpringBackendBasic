@@ -4,6 +4,8 @@ import com.example.restapi.model.BookQueryParam;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequestMapping("api")
@@ -12,6 +14,18 @@ public class RestApiController {
     public String hello() {
         var html = "<html><body><h1>Hello Spring Boot</h1></body></html>";
         return html;
+    }
+
+    @GetMapping(path="")
+    public void exception() {
+        // 1.
+        // throw new RuntimeException("Run time exception call");
+
+        // 2. 가장 많이 일어나는 에러 : Out of index
+        // 하나씩 케이스를 찾아 try/catch 문으로 처리하기는 어렵다.
+        var list = List.of("Hello");
+        var element = list.get(1);
+        log.info("element : {}", element);
     }
 
     @GetMapping(path="/echo/{message}/age/{age}/is-man/{isMan}")
@@ -49,8 +63,6 @@ public class RestApiController {
         return "hello";
     }
 
-    // TODO Parameter 2가지를 받습니다. int 형태로 받아서 두 수의 덧셈과 곱셈을 수행
-    // TODO String 타입 boolean 타입도 받아볼 것
     @GetMapping(path="/add/{integer1}/{integer2}")
     public int addTwoInt(
             @PathVariable int integer1,
