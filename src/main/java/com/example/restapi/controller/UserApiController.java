@@ -2,6 +2,8 @@ package com.example.restapi.controller;
 
 import com.example.restapi.model.Api;
 import com.example.restapi.model.UserResponse;
+import org.springframework.boot.context.config.ConfigDataNotFoundException;
+import org.springframework.expression.AccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +33,10 @@ public class UserApiController {
     public Api<UserResponse> getUser(
             @PathVariable String userId
     ) {
+        if(true) {
+            throw new RuntimeException("message");
+        }
+
         var user = userList.stream()
                 .filter(
                         it -> it.getId().equals(userId)
