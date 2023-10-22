@@ -1,5 +1,6 @@
 package com.example.restapi.model;
 
+import com.example.restapi.annotation.PhoneNumber;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.PropertyNamingStrategy;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
@@ -20,9 +21,12 @@ public class UserRegisterRequest {
 
     // @NotNull    // != null
     // @NotEmpty   // != null && name != ""
+    // @NotBlank   // != null && name != "" && name != "  "
 
-    @NotBlank   // != null && name != "" && name != "  "
+    // name과 nickName 둘 중 하나만 있으면 오류가 없는 것으로 처리하려고 함
+    // 이런 로직을 처리하는 Annotation은 없으므로 아래 AssertTrue로 새로 정의할 것
     private String name;
+    private String nickName;
 
     @Size(min=1, max=12)
     @NotBlank
@@ -36,9 +40,23 @@ public class UserRegisterRequest {
     @Email
     private String email;
 
-    @Pattern(regexp = "^\\d{2,3}-\\d{3,4}-\\d{4}$", message="휴대폰 번호 양식에 맞지 않습니다.")
+    @PhoneNumber
     private String phoneNumber;
 
     @FutureOrPresent
     private LocalDateTime registerAt;
+
+    @AssertTrue(message = "name or nickname은 존재해야 합니다.")
+    public boolean nameCheck() {
+        if (!name.isBlank()) {
+            return true;
+        }
+
+        if (!nickName.isBlank()) {
+            return true;
+        }
+
+        return false;
+    }
+
 }
