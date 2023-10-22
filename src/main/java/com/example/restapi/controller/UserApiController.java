@@ -1,17 +1,18 @@
 package com.example.restapi.controller;
 
 import com.example.restapi.model.Api;
+import com.example.restapi.model.UserRegisterRequest;
 import com.example.restapi.model.UserResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
 import org.springframework.boot.context.config.ConfigDataNotFoundException;
 import org.springframework.expression.AccessException;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+@Slf4j
 @RestController
 @RequestMapping("/api/user")
 public class UserApiController {
@@ -52,4 +53,14 @@ public class UserApiController {
 
         return response;
     }
+
+    @PostMapping("")
+    public UserRegisterRequest register(
+            @RequestBody
+            UserRegisterRequest userRegisterRequest
+    ) {
+        log.info("info : {}", userRegisterRequest);
+        return userRegisterRequest;
+    }
+
 }

@@ -27,12 +27,12 @@ public class PostApiController {
     ) {
         return memberRequest;
     }
-
-    @PostMapping("/user")
-    public UserRequest user(
-            @RequestBody UserRequest userRequest
-    ) {
-        System.out.println(userRequest);
-        return userRequest;
-    }
+//
+//    @PostMapping("/user")
+//    public UserRequest user(
+//            @RequestBody UserRequest userRequest
+//    ) {
+//        System.out.println(userRequest);
+//        return userRequest;
+//    }
 }
