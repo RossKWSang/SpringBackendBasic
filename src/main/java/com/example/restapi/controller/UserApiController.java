@@ -10,6 +10,7 @@ import org.springframework.expression.AccessException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
@@ -56,6 +57,7 @@ public class UserApiController {
 
     @PostMapping("")
     public UserRegisterRequest register(
+            @Valid
             @RequestBody
             UserRegisterRequest userRegisterRequest
     ) {

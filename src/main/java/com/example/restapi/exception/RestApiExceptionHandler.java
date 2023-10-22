@@ -17,13 +17,13 @@ import java.util.NoSuchElementException;
 @Order(1)
 public class RestApiExceptionHandler {
 
-    @ExceptionHandler(value={Exception.class})
-    public ResponseEntity exception(
-            Exception e
-    ) {
-        log.error("RestApiExceptionHandler", e);
-        return ResponseEntity.status(200).build();
-    }
+//    @ExceptionHandler(value={Exception.class})
+//    public ResponseEntity exception(
+//            Exception e
+//    ) {
+//        log.error("RestApiExceptionHandler", e);
+//        return ResponseEntity.status(200).build();
+//    }
 
     @ExceptionHandler(value={IndexOutOfBoundsException.class})
     public ResponseEntity outOfBound(
