@@ -3,15 +3,18 @@ package com.example.restapi.controller;
 import com.example.restapi.model.Api;
 import com.example.restapi.model.UserRegisterRequest;
 import com.example.restapi.model.UserResponse;
+import com.example.restapi.model.ValidationApi;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
 import org.springframework.boot.context.config.ConfigDataNotFoundException;
 import org.springframework.expression.AccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -56,13 +59,20 @@ public class UserApiController {
     }
 
     @PostMapping("")
-    public UserRegisterRequest register(
+    public ValidationApi<UserRegisterRequest> register(
             @Valid
             @RequestBody
-            UserRegisterRequest userRegisterRequest
+            ValidationApi<UserRegisterRequest> userRegisterRequest
     ) {
         log.info("info : {}", userRegisterRequest);
-        return userRegisterRequest;
-    }
 
+        var body = userRegisterRequest.getData();
+        ValidationApi<UserRegisterRequest> response = ValidationApi.<UserRegisterRequest>builder()
+                .resultCode(String.valueOf(HttpStatus.OK.value()))
+                .resultMessage(HttpStatus.OK.getReasonPhrase())
+                .data(body)
+                .build();
+
+        return response;
+    }
 }
