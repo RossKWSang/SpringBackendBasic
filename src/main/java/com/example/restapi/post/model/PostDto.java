@@ -1,12 +1,13 @@
 package com.example.restapi.post.model;
 
+import com.example.restapi.board.db.BoardEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.PropertyNamingStrategies;
 import com.fasterxml.jackson.databind.annotation.JsonNaming;
 import lombok.*;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Getter
 @Setter
@@ -15,24 +16,14 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 @AllArgsConstructor
 @JsonNaming(value = PropertyNamingStrategies.SnakeCaseStrategy.class)
-public class PostRequest {
-
-    private Long boardId = 1L;
-
-    @NotBlank
+public class PostDto {
+    private Long id;
+    private Long boardId;
     private String userName;
-
-    @NotBlank
-    @Size(min=4, max=4)
     private String password;
-
-    @NotBlank
-    @Email
     private String email;
-
-    @NotBlank
+    private String status;
     private String title;
-
-    @NotBlank
     private String content;
+    private LocalDateTime postedAt;
 }

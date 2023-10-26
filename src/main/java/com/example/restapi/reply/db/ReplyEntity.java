@@ -2,10 +2,7 @@ package com.example.restapi.reply.db;
 
 import lombok.*;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Getter
@@ -16,7 +13,6 @@ import java.time.LocalDateTime;
 @Builder
 @Entity(name = "reply")
 public class ReplyEntity {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,6 +21,8 @@ public class ReplyEntity {
     private String password;
     private String status;
     private String title;
+
+    @Column(columnDefinition = "TEXT")
     private String content;
     private LocalDateTime repliedAt;
 }

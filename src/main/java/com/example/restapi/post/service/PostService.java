@@ -1,9 +1,11 @@
 package com.example.restapi.post.service;
 
+import com.example.restapi.board.db.BoardRepository;
 import com.example.restapi.post.db.PostEntity;
 import com.example.restapi.post.db.PostRepository;
 import com.example.restapi.post.model.PostRequest;
 import com.example.restapi.post.model.PostViewRequest;
+import com.example.restapi.reply.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Service;
@@ -15,12 +17,16 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
+    private final ReplyService replyService;
+    private final BoardRepository boardRepository;
 
     public PostEntity create(
         PostRequest postRequest
     ) {
+        var boardEntity = boardRepository.findById(postRequest.getBoardId()).get();
+
         var entity = PostEntity.builder()
-                .boardId(1L) // 임시고정
+                .board(boardEntity) // 임시고정
                 .userName(postRequest.getUserName())
                 .password(postRequest.getPassword())
                 .email(postRequest.getEmail())
@@ -44,7 +50,12 @@ public class PostService {
 
                         throw new RuntimeException(String.format(format, it.getPassword(), postViewRequest.getPassword()));
                     }
+
+                    var replyList = replyService.findAllByPostId(it.getId());
+                    it.setReplyList(replyList);
+
                     return it;
+
                         }).orElseThrow(
                         () -> {
                             return new RuntimeException("해당 게시글이 존재하지 않습니다 : " + postViewRequest.getPostId());
