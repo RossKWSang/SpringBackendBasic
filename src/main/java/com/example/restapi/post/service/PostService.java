@@ -1,6 +1,8 @@
 package com.example.restapi.post.service;
 
 import com.example.restapi.board.db.BoardRepository;
+import com.example.restapi.common.Api;
+import com.example.restapi.common.Pagination;
 import com.example.restapi.post.db.PostEntity;
 import com.example.restapi.post.db.PostRepository;
 import com.example.restapi.post.model.PostRequest;
@@ -8,7 +10,9 @@ import com.example.restapi.post.model.PostViewRequest;
 import com.example.restapi.reply.service.ReplyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Required;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -17,7 +21,6 @@ import java.util.List;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
-    private final ReplyService replyService;
     private final BoardRepository boardRepository;
 
     public PostEntity create(
@@ -51,8 +54,9 @@ public class PostService {
                         throw new RuntimeException(String.format(format, it.getPassword(), postViewRequest.getPassword()));
                     }
 
-                    var replyList = replyService.findAllByPostId(it.getId());
-                    it.setReplyList(replyList);
+                    // 매핑이 된 이후로 해당 코드는 없애도 됨
+                    // var replyList = replyService.findAllByPostId(it.getId());
+                    // it.setReplyList(replyList);
 
                     return it;
 
@@ -63,8 +67,22 @@ public class PostService {
                 );
     }
 
-    public List<PostEntity> all() {
-        return postRepository.findAll();
+    public Api<List<PostEntity>> all(Pageable pageable) {
+        var list = postRepository.findAll(pageable);
+        var pagination = Pagination.builder()
+                .page(list.getNumber())
+                .size(list.getSize())
+                .currentElements(list.getNumberOfElements())
+                .totalElements(list.getTotalElements())
+                .totalPage(list.getTotalPages())
+                .build();
+
+        var response = Api.<List<PostEntity>>builder()
+                .body(list.toList())
+                .pagination(pagination)
+                .build();
+
+        return response;
     }
 
     public void delete(PostViewRequest postViewRequest) {

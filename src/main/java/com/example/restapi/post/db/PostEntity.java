@@ -37,6 +37,8 @@ public class PostEntity {
     private String content;
     private LocalDateTime postedAt;
 
-    @OneToMany
+    @OneToMany(
+            mappedBy = "post"
+    )
     private List<ReplyEntity> replyList;
 }
