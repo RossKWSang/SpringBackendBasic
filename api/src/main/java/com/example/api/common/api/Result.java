@@ -31,4 +31,20 @@ public class Result {
                 .resultDescription("성공")
                 .build();
     }
+
+    public static Result ERROR(ErrorCodeIfs errorCodeIfs, Throwable tx) {
+        return Result.builder()
+                .resultCode(errorCodeIfs.getErrorCode())
+                .resultMessage(errorCodeIfs.getDescription())
+                .resultDescription(tx.getLocalizedMessage()) // 살짝 비추
+                .build();
+    }
+
+    public static Result ERROR(ErrorCodeIfs errorCodeIfs, String description) {
+        return Result.builder()
+                .resultCode(errorCodeIfs.getErrorCode())
+                .resultMessage(errorCodeIfs.getDescription())
+                .resultDescription(description)
+                .build();
+    }
 }
