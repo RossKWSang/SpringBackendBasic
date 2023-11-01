@@ -4,6 +4,7 @@ import com.example.api.account.model.AccountMeResponse;
 import com.example.api.common.api.Api;
 import com.example.api.common.error.ErrorCode;
 import com.example.api.common.error.UserErrorCode;
+import com.example.api.common.exception.ApiException;
 import com.example.db.account.AccountEntity;
 import com.example.db.account.AccountRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,12 @@ public class AccountApiController {
 
         var str = "안녕하세요";
         var age = 0;
-        Integer.parseInt(str);
+
+        try {
+            Integer.parseInt(str);
+        } catch (Exception e) {
+            throw new ApiException(ErrorCode.SERVER_ERROR, e, "사용자 Me 호출시 에러 발생");
+        }
 
         return Api.OK(response);
     }
